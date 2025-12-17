@@ -1,0 +1,37 @@
+name: AI Auto Publisher - X
+
+on:
+  schedule:
+    - cron: "0 8 * * *"    # 8 صباحًا
+    - cron: "0 10 * * *"   # 10 صباحًا
+    - cron: "0 12 * * *"   # 12 ظهرًا
+    - cron: "0 14 * * *"   # 2 ظهرًا
+    - cron: "0 16 * * *"   # 4 مساءً
+    - cron: "0 18 * * *"   # 6 مساءً
+    - cron: "0 20 * * *"   # 8 مساءً
+    - cron: "0 22 * * *"   # 10 مساءً
+  workflow_dispatch:       # لتشغيله يدوياً
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run bot
+        run: python publish.py
+        env:
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
